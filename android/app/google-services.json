@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "685542521590",
+    "project_id": "consolelovers-a1831",
+    "storage_bucket": "consolelovers-a1831.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685542521590:android:6245fc8cafdd00ee818ad7",
+        "android_client_info": {
+          "package_name": "com.example.console_lovers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685542521590-dakgf2nb49c0e34codpadq0q0kh305s0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDofMicWJU8R2b8WJ5CoNfQmo3F-9WAMjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685542521590-dakgf2nb49c0e34codpadq0q0kh305s0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
