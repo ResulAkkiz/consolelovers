@@ -1,14 +1,15 @@
 import 'package:consolelovers/CommonWidget/Wrap_ViewPage.dart';
 import 'package:consolelovers/Model/Gamer.dart';
 import 'package:consolelovers/Model/Product.dart';
+import 'package:consolelovers/Model/ProductInBasket.dart';
 import 'package:consolelovers/OrderDetailPage.dart';
 import 'package:consolelovers/Services/FirebaseDbService.dart';
 import 'package:flutter/material.dart';
 
 class BasketPage extends StatefulWidget {
-  final List<Product> listofProduct;
+  List<ProductInBasket> listofProduct;
   final Gamer gamer;
-  const BasketPage({Key? key, required this.listofProduct, required this.gamer})
+  BasketPage({Key? key, required this.listofProduct, required this.gamer})
       : super(key: key);
   @override
   State<BasketPage> createState() => _BasketPageState();
@@ -17,16 +18,34 @@ class BasketPage extends StatefulWidget {
 class _BasketPageState extends State<BasketPage> {
   Map<String, int> priceofSingleProduct = {};
   int totalPrice = 0;
-  late List<int> indexList =
-      List<int>.generate(widget.listofProduct.length, (counter) => 1);
-  late List<int> hourList =
-      List<int>.generate(widget.listofProduct.length, (counter) => 1);
+
+  late List<int> indexList = [];
+  late List<int> hourList = [];
 
   @override
   void initState() {
+    indexList = getAmounts();
+    hourList = getHours();
+
     fillPriceList();
     calculateTotalPrice();
     super.initState();
+  }
+
+  List<int> getAmounts() {
+    List<int> amounts = [];
+    for (var element in widget.listofProduct) {
+      amounts.add(element.productBuyAmount);
+    }
+    return amounts;
+  }
+
+  List<int> getHours() {
+    List<int> hours = [];
+    for (var element in widget.listofProduct) {
+      hours.add(element.productBuyHour ?? 1);
+    }
+    return hours;
   }
 
   final FirebaseDbService _firebaseDbService = FirebaseDbService();
@@ -63,9 +82,16 @@ class _BasketPageState extends State<BasketPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  // onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (builder)=>OrderDetailPage(productList: widget.listofProduct, gamer: gamer, orderPrice: orderPrice)))},
                   icon: const Icon(Icons.check),
-                  label: const Text('Confirm the Order'), onPressed: () {},
+                  label: const Text('Confirm the Order'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => OrderDetailPage(
+                            gamer: widget.gamer, orderPrice: totalPrice),
+                      ),
+                    );
+                  },
                 ),
                 Chip(
                   label: Text('Total Price :$totalPrice'),
@@ -120,6 +146,7 @@ class _BasketPageState extends State<BasketPage> {
                       onChanged: (int? value) {
                         setState(
                           () {
+                            updateAmount(currentProduct, value);
                             indexList[index] = value!;
                             priceofSingleProduct.addEntries({
                               currentProduct.productID: calculateSinglePrice(
@@ -140,6 +167,7 @@ class _BasketPageState extends State<BasketPage> {
                       onChanged: (int? value) {
                         setState(
                           () {
+                            updateHour(currentProduct, value);
                             hourList[index] = value!;
                             priceofSingleProduct.addEntries({
                               currentProduct.productID: calculateSinglePrice(
@@ -200,6 +228,7 @@ class _BasketPageState extends State<BasketPage> {
                       onChanged: (int? value) {
                         setState(
                           () {
+                            updateAmount(currentProduct, value);
                             indexList[index] = value!;
                             priceofSingleProduct.addEntries({
                               currentProduct.productID: calculateSinglePrice(
@@ -208,7 +237,6 @@ class _BasketPageState extends State<BasketPage> {
                                   null,
                                   currentProduct.productType)
                             }.entries);
-
                             calculateTotalPrice();
                           },
                         );
@@ -222,6 +250,16 @@ class _BasketPageState extends State<BasketPage> {
         ),
       );
     }
+  }
+
+  Future<bool> updateHour(Product currentProduct, int? value) async {
+    return await _firebaseDbService.updateHour(
+        widget.gamer, currentProduct, value!);
+  }
+
+  Future<bool> updateAmount(Product currentProduct, int? value) async {
+    return await _firebaseDbService.updateAmount(
+        widget.gamer, currentProduct, value!);
   }
 
   List<DropdownMenuItem<int>> buildMenu(int maxValue) {
@@ -265,8 +303,12 @@ class _BasketPageState extends State<BasketPage> {
 
   void fillPriceList() {
     for (var element in widget.listofProduct) {
-      priceofSingleProduct
-          .addEntries({element.productID: (element.productPrice * 1)}.entries);
+      element.productBuyHour = element.productBuyHour ?? 1;
+      priceofSingleProduct.addEntries({
+        element.productID: (element.productPrice *
+            element.productBuyHour! *
+            element.productBuyAmount)
+      }.entries);
     }
   }
 }

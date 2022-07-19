@@ -21,8 +21,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primarySwatch: Colors.orange,
-            scaffoldBackgroundColor: Colors.grey.shade900),
+            primarySwatch: Colors.red,
+            scaffoldBackgroundColor: Colors.blueGrey.shade900),
         title: 'Material App',
         home: const SignInEmailPasswordPage());
   }

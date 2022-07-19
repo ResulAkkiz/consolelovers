@@ -1,14 +1,9 @@
 import 'package:consolelovers/Model/Product.dart';
 
 class Game extends Product {
-  // String gameID;
-  // String gameName;
   String consoleID;
   String gameGenre;
   String gameSummary;
-  //String consoleImageURL;
-  //int gameStock;
-  //int gamePrice;
 
   Game(
       {required this.consoleID,
@@ -20,16 +15,6 @@ class Game extends Product {
       required super.productType,
       required super.productStock,
       required super.productPrice});
-
-  /* Game.fromMap(Map<String, dynamic> map)
-      : gameID = map['gameID'], //+
-        gameName = map['gameName'], //+
-        consoleID = map['consoleID'], //Dropdown +
-        gameGenre = map['gameGenre'], //Dropdown +
-        gameSummary = map['gameSummary'],
-        consoleImageURL = map['consoleImageURL'],
-        gameStock = map['gameStock'],
-        gamePrice = map['gamePrice']; //+*/
 
   factory Game.fromMap(Map<String, dynamic> map) {
     return Game(

@@ -1,25 +1,72 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:consolelovers/Model/Gamer.dart';
 import 'package:consolelovers/Model/Product.dart';
 
 class Order {
   String orderID;
-  Gamer gamer;
-  String orderPhoneNumber;
-  String orderAdress;
+  String gamerID;
+  String gamerName;
+  String gamerSurname;
+  String gamerPhoneNumber;
+  String gamerAdress;
   List<Product> productList;
   int orderPrice;
+
   Order({
     required this.orderID,
-    required this.gamer,
-    required this.orderPhoneNumber,
-    required this.orderAdress,
+    required this.gamerID,
+    required this.gamerName,
+    required this.gamerSurname,
+    required this.gamerPhoneNumber,
+    required this.gamerAdress,
     required this.productList,
     required this.orderPrice,
   });
 
-  @override
-  String toString() {
-    return 'Order(orderID: $orderID, gamer: $gamer, orderPhoneNumber: $orderPhoneNumber, orderAdress: $orderAdress, productList: $productList, orderPrice: $orderPrice)';
+  Order copyWith({
+    String? orderID,
+    String? gamerID,
+    String? gamerName,
+    String? gamerSurname,
+    String? gamerPhoneNumber,
+    String? gamerAdress,
+    List<Product>? productList,
+    int? orderPrice,
+  }) {
+    return Order(
+      orderID: orderID ?? this.orderID,
+      gamerID: gamerID ?? this.gamerID,
+      gamerName: gamerName ?? this.gamerName,
+      gamerSurname: gamerSurname ?? this.gamerSurname,
+      gamerPhoneNumber: gamerPhoneNumber ?? this.gamerPhoneNumber,
+      gamerAdress: gamerAdress ?? this.gamerAdress,
+      productList: productList ?? this.productList,
+      orderPrice: orderPrice ?? this.orderPrice,
+    );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'orderID': orderID,
+      'gamerID': gamerID,
+      'gamerName': gamerName,
+      'gamerSurname': gamerSurname,
+      'gamerPhoneNumber': gamerPhoneNumber,
+      'gamerAdress': gamerAdress,
+      'productList': productList.map((x) => x.toMap()).toList(),
+      'orderPrice': orderPrice,
+    };
+  }
+
+  /*factory Order.fromMap(Map<String, dynamic> map) {
+    return Order(
+      orderID: map['orderID'] as String,
+      gamerID: map['gamerID'] as String,
+      gamerName: map['gamerName'] as String,
+      gamerSurname: map['gamerSurname'] as String,
+      gamerPhoneNumber: map['gamerPhoneNumber'] as String,
+      gamerAdress: map['gamerAdress'] as String,
+      productList: List<Product>.from((map['productList'] as List<int>).map<Product>((x) => Product.fromMap(x as Map<String,dynamic>),),),
+      orderPrice: map['orderPrice'] as int,
+    );
+  }*/
+
 }

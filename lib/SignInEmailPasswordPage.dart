@@ -65,15 +65,15 @@ class _SignInEmailPasswordPageState extends State<SignInEmailPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    buttonText = _formType == FormType.Login ? 'Giriş Yap' : 'Kayıt Ol';
+    buttonText = _formType == FormType.Login ? 'Sign in' : 'Sign up';
     linkText = _formType == FormType.Login
-        ? 'Hesabınız Yok mu? Kayıt olun.'
-        : 'Hesabınız var mı? Giriş yapın.';
+        ? 'Dont have an account? Sign up.'
+        : 'Do you have an account? Sign in.';
     FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Giriş/Kayıt'),
+        title: const Text('Sign in/Sign up'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -86,11 +86,23 @@ class _SignInEmailPasswordPageState extends State<SignInEmailPasswordPage> {
                   style: const TextStyle(color: Colors.white),
                   initialValue: 'resul@gmail.com',
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.mail),
-                      hintText: 'Email',
-                      labelText: 'Email',
-                      border: OutlineInputBorder()),
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 2, color: Theme.of(context).primaryColor),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.mail,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      hintText: 'E-mail',
+                      labelStyle: TextStyle(
+                          color: Theme.of(context).primaryColor, fontSize: 20),
+                      labelText: 'E-mail',
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 2,
+                              color: Theme.of(context).primaryColor))),
                   onSaved: (value) {
                     email = value!;
                   },
@@ -99,13 +111,23 @@ class _SignInEmailPasswordPageState extends State<SignInEmailPasswordPage> {
                   height: 10,
                 ),
                 TextFormField(
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
                   initialValue: '123456',
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.password_sharp),
-                      hintText: 'Şifre',
-                      labelText: 'Şifre',
-                      border: OutlineInputBorder()),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 2, color: Theme.of(context).primaryColor)),
+                    prefixIcon: Icon(
+                      Icons.password_sharp,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    labelStyle: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 20),
+                    hintText: 'Password',
+                    labelText: 'Password',
+                  ),
                   onSaved: (value) {
                     password = value!;
                   },
@@ -135,6 +157,7 @@ class _SignInEmailPasswordPageState extends State<SignInEmailPasswordPage> {
                   },
                   child: Text(linkText),
                 ),
+                Expanded(child: Image.asset('assets/Images/MarioMainPage.png'))
               ],
             ),
           ),

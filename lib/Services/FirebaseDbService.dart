@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consolelovers/Model/Accessory.dart';
 import 'package:consolelovers/Model/Console.dart';
 import 'package:consolelovers/Model/Game.dart';
 import 'package:consolelovers/Model/Gamer.dart';
+import 'package:consolelovers/Model/Order.dart';
 import 'package:consolelovers/Model/Product.dart';
 import 'package:consolelovers/Model/ProductInBasket.dart';
 import 'package:consolelovers/Services/DbBase.dart';
@@ -60,14 +58,15 @@ class FirebaseDbService extends DbBase {
   @override
   Future<bool> savetoBasket(String userID, Product product) async {
     ProductInBasket productInBasket = ProductInBasket(
-        productBuyHour: 1,
-        productBuyAmount: 1,
-        productID: product.productID,
-        productName: product.productName,
-        productPhotoUrl: product.productPhotoUrl,
-        productPrice: product.productPrice,
-        productStock: product.productStock,
-        productType: product.productType);
+      productBuyAmount: 1,
+      productBuyHour: 1,
+      productID: product.productID,
+      productName: product.productName,
+      productPhotoUrl: product.productPhotoUrl,
+      productPrice: product.productPrice,
+      productStock: product.productStock,
+      productType: product.productType,
+    );
     _firebaseFirestore.collection('basket').doc(userID).set(
         {productInBasket.productID: productInBasket.toMap()},
         SetOptions(merge: true));
@@ -85,36 +84,15 @@ class FirebaseDbService extends DbBase {
   }
 
   @override
-  Future<List<Product>> readUserBasket(String userID) async {
-    List<Product> productList = [];
+  Future<List<ProductInBasket>> readUserBasket(String userID) async {
+    List<ProductInBasket> productList = [];
     DocumentSnapshot<Map<String, dynamic>> snapshotProduct =
         await _firebaseFirestore.collection("basket").doc(userID).get();
 
     for (Map<String, dynamic> singleProduct in snapshotProduct.data()!.values) {
-      if (singleProduct['productType'] == 'Console') {
-        Console _console = Console.fromMap(singleProduct);
-        productList.add(_console);
-      } else if (singleProduct['productType'] == 'Game') {
-        Game _game = Game.fromMap(singleProduct);
-        productList.add(_game);
-      } else {
-        Accessory _accessory = Accessory.fromMap(singleProduct);
-        productList.add(_accessory);
-      }
+      ProductInBasket _productInBasket = ProductInBasket.fromMap(singleProduct);
+      productList.add(_productInBasket);
     }
-
-    QuerySnapshot<Map<String, dynamic>> snapshotGame = await _firebaseFirestore
-        .collection("basket")
-        .doc(userID)
-        .collection('Game')
-        .get();
-
-    for (QueryDocumentSnapshot<Map<String, dynamic>> singleGame
-        in snapshotGame.docs) {
-      Game _game = Game.fromMap(singleGame.data());
-      productList.add(_game);
-    }
-
     return productList;
   }
 
@@ -137,6 +115,29 @@ class FirebaseDbService extends DbBase {
         .collection('gamer')
         .doc(gamer.gamerID)
         .update(gamer.toMap());
+    return true;
+  }
+
+  Future<bool> updateAmount(Gamer gamer, Product product, int value) async {
+    await _firebaseFirestore.collection('basket').doc(gamer.gamerID).set({
+      product.productID: {'productBuyAmount': value}
+    }, SetOptions(merge: true));
+    return true;
+  }
+
+  Future<bool> updateHour(Gamer gamer, Product product, int value) async {
+    await _firebaseFirestore.collection('basket').doc(gamer.gamerID).set({
+      product.productID: {'productBuyHour': value}
+    }, SetOptions(merge: true));
+    return true;
+  }
+
+  @override
+  Future<bool> saveOrder(Order order) async {
+    await _firebaseFirestore
+        .collection('order')
+        .doc(order.orderID)
+        .set(order.toMap());
     return true;
   }
 }

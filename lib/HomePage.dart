@@ -5,6 +5,7 @@ import 'package:consolelovers/ConsoleViewPage.dart';
 import 'package:consolelovers/GameViewPage.dart';
 import 'package:consolelovers/Model/Gamer.dart';
 import 'package:consolelovers/Model/Product.dart';
+import 'package:consolelovers/Model/ProductInBasket.dart';
 import 'package:consolelovers/ProfilePage.dart';
 import 'package:consolelovers/Services/FirebaseDbService.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FirebaseDbService _firebaseDbService = FirebaseDbService();
 
-  List<Product> listofProduct = [];
+  List<ProductInBasket> listofProduct = [];
   int currentIndex = 0;
   @override
   void initState() {
@@ -57,7 +58,9 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await getUserBasket(widget.gamer);
+              // ignore: use_build_context_synchronously
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => BasketPage(
