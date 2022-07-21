@@ -157,7 +157,10 @@ class _SignInEmailPasswordPageState extends State<SignInEmailPasswordPage> {
                   },
                   child: Text(linkText),
                 ),
-                Expanded(child: Image.asset('assets/Images/MarioMainPage.png'))
+                Container(
+                    padding: EdgeInsets.only(top: 15),
+                    height: MediaQuery.of(context).size.height / 4,
+                    child: Image.asset('assets/Images/MarioMainPage.png'))
               ],
             ),
           ),

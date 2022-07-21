@@ -20,25 +20,6 @@ class ProfilePage extends StatelessWidget {
     controllerGamerPhonenumber.text = gamer.gamerPhoneNumber ?? '';
     controllerGamerAdress.text = gamer.gamerAdress ?? '';
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Profile'),
-        centerTitle: true,
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                _firebaseAuthService.signOut();
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const SignInEmailPasswordPage(),
-                    ),
-                    ((route) => false));
-              },
-              child: const Text(
-                "Sign Out",
-                style: TextStyle(color: Colors.white),
-              ))
-        ],
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

@@ -1,12 +1,19 @@
+import 'package:consolelovers/HomePage.dart';
+import 'package:consolelovers/Model/Gamer.dart';
 import 'package:consolelovers/Model/Order.dart';
 import 'package:consolelovers/Model/ProductInBasket.dart';
+import 'package:consolelovers/MyOrderPage.dart';
+import 'package:consolelovers/Services/FirebaseAuthService.dart';
+import 'package:consolelovers/Services/FirebaseDbService.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OrderSuccessfulPage extends StatelessWidget {
+  final FirebaseDbService _firebaseDbService = FirebaseDbService();
+  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
   final Order order;
 
-  const OrderSuccessfulPage({Key? key, required this.order}) : super(key: key);
+  OrderSuccessfulPage({Key? key, required this.order}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,14 +97,8 @@ class OrderSuccessfulPage extends StatelessWidget {
                               currentProduct.productName,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.lato(
-                                  shadows: [
-                                    const Shadow(
-                                      color: Colors.red,
-                                      blurRadius: 15,
-                                    )
-                                  ],
                                   fontSize:
-                                      currentProduct.productName.length < 16
+                                      currentProduct.productName.length < 14
                                           ? 25
                                           : 18,
                                   fontWeight: FontWeight.bold),
@@ -177,9 +178,27 @@ class OrderSuccessfulPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                      onPressed: () {}, child: const Text('Go to Homepage')),
+                      onPressed: () {
+                        getGamer().then((value) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(
+                                gamer: value,
+                              ),
+                            ),
+                          );
+                        });
+                      },
+                      child: const Text('Go to Homepage')),
                   ElevatedButton(
-                      onPressed: () {}, child: const Text('Go to My Order'))
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => MyOrdersPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('Go to My Order'))
                 ],
               )
             ],
@@ -187,5 +206,10 @@ class OrderSuccessfulPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<Gamer> getGamer() async {
+    Gamer gamer = (await _firebaseAuthService.currentUser())!;
+    return await _firebaseDbService.readGamer(gamer.gamerID);
   }
 }

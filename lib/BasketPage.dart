@@ -54,14 +54,6 @@ class _BasketPageState extends State<BasketPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Basket'),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                await _firebaseDbService.deleteBasket("R4sul");
-                setState(() {});
-              },
-              icon: const Icon(Icons.delete))
-        ],
       ),
       body: Column(
         children: [
@@ -113,6 +105,21 @@ class _BasketPageState extends State<BasketPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            SizedBox(
+              child: IconButton(
+                  splashColor: Colors.orange,
+                  iconSize: 30,
+                  onPressed: () {
+                    setState(() {
+                      priceofSingleProduct.remove(currentProduct.productID);
+                      widget.listofProduct.remove(currentProduct);
+                      _firebaseDbService.deleteProduct(
+                          widget.gamer.gamerID, currentProduct.productID);
+                      calculateTotalPrice();
+                    });
+                  },
+                  icon: const Icon(Icons.dangerous_outlined)),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -196,8 +203,20 @@ class _BasketPageState extends State<BasketPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            IconButton(
+                iconSize: 30,
+                onPressed: () {
+                  setState(() {
+                    priceofSingleProduct.remove(currentProduct.productID);
+                    widget.listofProduct.remove(currentProduct);
+                    _firebaseDbService.deleteProduct(
+                        widget.gamer.gamerID, currentProduct.productID);
+                    calculateTotalPrice();
+                  });
+                },
+                icon: const Icon(Icons.dangerous_outlined)),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(0.0),
               child: Text(
                 currentProduct.productName,
                 textAlign: TextAlign.center,

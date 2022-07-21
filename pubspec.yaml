@@ -68,6 +68,14 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/Images/MarioMainPage.png
+    - assets/Icons/IconConsole.png
+    - assets/Icons/IconFlyingMario.png
+    - assets/Icons/IconMushroom.png
+    - assets/Icons/IconCoin.png
+    - assets/Icons/IconBox.png
+    - assets/Icons/IconGamepad.png
+    - assets/Icons/IconCastle.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

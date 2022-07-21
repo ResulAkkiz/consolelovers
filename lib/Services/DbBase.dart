@@ -12,4 +12,5 @@ abstract class DbBase {
   Future<bool> deleteBasket(String userID);
   Future<List<Product>> readUserBasket(String userID);
   Future<bool> saveOrder(Order order);
+  Future<Console> getConsolebyID(String consoleID);
 }

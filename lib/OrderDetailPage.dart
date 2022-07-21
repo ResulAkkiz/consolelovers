@@ -48,8 +48,32 @@ class OrderDetailPage extends StatelessWidget {
                         readOnly: true,
                         initialValue: gamer.gamerName,
                         style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
-                            label: Text('Name'), border: OutlineInputBorder()),
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .backgroundColor!,
+                              width: 3.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .backgroundColor!,
+                              width: 2.0,
+                            ),
+                          ),
+                          labelStyle: GoogleFonts.lato(
+                              fontSize: 20,
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .backgroundColor),
+                          label: Text('Name'),
+                        ),
                       ),
                     ),
                   ),
@@ -60,9 +84,32 @@ class OrderDetailPage extends StatelessWidget {
                         readOnly: true,
                         initialValue: gamer.gamerSurname,
                         style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
-                            label: Text('Surname'),
-                            border: OutlineInputBorder()),
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .backgroundColor!,
+                              width: 3.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .backgroundColor!,
+                              width: 2.0,
+                            ),
+                          ),
+                          labelStyle: GoogleFonts.lato(
+                              fontSize: 20,
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .backgroundColor),
+                          label: Text('Surname'),
+                        ),
                       ),
                     ),
                   ),
@@ -74,8 +121,26 @@ class OrderDetailPage extends StatelessWidget {
               child: TextFormField(
                 controller: controllerGamerPhonenumber,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                    label: Text('Phone Number'), border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).appBarTheme.backgroundColor!,
+                      width: 3.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).appBarTheme.backgroundColor!,
+                      width: 2.0,
+                    ),
+                  ),
+                  labelStyle: GoogleFonts.lato(
+                      fontSize: 20,
+                      color: Theme.of(context).appBarTheme.backgroundColor),
+                  label: Text('Phone Number'),
+                ),
               ),
             ),
             Padding(
@@ -85,8 +150,27 @@ class OrderDetailPage extends StatelessWidget {
                 minLines: 3,
                 maxLines: 3,
                 controller: controllerGamerAdress,
-                decoration: const InputDecoration(
-                    label: Text('Adress'), border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).appBarTheme.backgroundColor!,
+                      width: 3.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).appBarTheme.backgroundColor!,
+                      width: 2.0,
+                    ),
+                  ),
+                  labelStyle: GoogleFonts.lato(
+                      fontSize: 20,
+                      color: Theme.of(context).appBarTheme.backgroundColor),
+                  label: const Text('Adress'),
+                ),
               ),
             ),
             Container(
@@ -108,17 +192,19 @@ class OrderDetailPage extends StatelessWidget {
                             padding: const EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height / 10,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                    blurStyle: BlurStyle.outer,
-                                    color: Colors.red,
+                                    blurStyle: BlurStyle.solid,
+                                    color: Theme.of(context)
+                                        .appBarTheme
+                                        .backgroundColor!,
                                     spreadRadius: 2,
                                     blurRadius: 7,
-                                    offset: Offset(0, 3)),
+                                    offset: const Offset(-2, 4)),
                               ],
                               color: Colors.white,
-                              borderRadius: BorderRadius.all(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(8),
                               ),
                             ),
@@ -218,13 +304,6 @@ class OrderDetailPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Chip(
-                label: Text(
-                  'Total Price : $orderPrice',
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-                backgroundColor: Colors.black87,
-              ),
               ElevatedButton.icon(
                 icon: const Icon(Icons.check),
                 label: const Text('Confirm the Order!'),
@@ -246,6 +325,13 @@ class OrderDetailPage extends StatelessWidget {
                               OrderSuccessfulPage(order: order)),
                       ((route) => false));
                 },
+              ),
+              Chip(
+                label: Text(
+                  'Total Price : $orderPrice',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                backgroundColor: Colors.black87,
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:consolelovers/Model/Console.dart';
 import 'package:consolelovers/Model/Game.dart';
 import 'package:consolelovers/Model/Gamer.dart';
 import 'package:consolelovers/Services/FirebaseDbService.dart';
@@ -16,9 +17,9 @@ class GameViewPage extends StatefulWidget {
 }
 
 class _GameViewPageState extends State<GameViewPage> {
+  final FirebaseDbService _firebaseDbService = FirebaseDbService();
   @override
   Widget build(BuildContext context) {
-    FirebaseDbService _firebaseDbService = FirebaseDbService();
     return Scaffold(
       body: FutureBuilder(
           future: _firebaseDbService.readGames(),
@@ -34,9 +35,18 @@ class _GameViewPageState extends State<GameViewPage> {
                   itemCount: listofGame.length,
                   itemBuilder: (BuildContext context, int index) {
                     Game currentGame = listofGame[index];
+
                     return Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Theme.of(context)
+                                    .appBarTheme
+                                    .backgroundColor!,
+                                blurRadius: 6,
+                                offset: const Offset(2, 6))
+                          ],
+                          borderRadius: BorderRadius.circular(8),
                           color: Colors.white),
                       margin: const EdgeInsets.all(15.0),
                       child: Column(
@@ -62,18 +72,25 @@ class _GameViewPageState extends State<GameViewPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               buildWrap(currentGame.productStock.toString(),
-                                  iconData: Icons.bolt, labelText: 'Stock'),
+                                  path: 'assets/Icons/IconBox.png',
+                                  labelText: 'Stock'),
                               buildWrap(currentGame.productPrice.toString(),
-                                  iconData: Icons.monetization_on,
+                                  path: 'assets/Icons/IconCoin.png',
                                   labelText: 'Price'),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildWrap(currentGame.consoleID,
-                                  iconData: Icons.videogame_asset,
-                                  labelText: 'Platform'),
+                              FutureBuilder(
+                                  future: getConsolebyID(currentGame.consoleID),
+                                  builder: (context,
+                                      AsyncSnapshot<Console?> snapshot) {
+                                    return buildWrap(
+                                        snapshot.data?.productName ?? '',
+                                        path: 'assets/Icons/IconGamepad.png',
+                                        labelText: 'Platform');
+                                  }),
                               Chip(
                                   backgroundColor:
                                       Theme.of(context).scaffoldBackgroundColor,
@@ -136,5 +153,10 @@ class _GameViewPageState extends State<GameViewPage> {
         ],
       ),
     );
+  }
+
+  Future<Console?> getConsolebyID(String consoleID) async {
+    Console? console = await _firebaseDbService.getConsolebyID(consoleID);
+    return console;
   }
 }

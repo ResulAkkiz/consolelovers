@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:consolelovers/CommonWidget/Wrap_ViewPage.dart';
 
 import 'package:consolelovers/Model/Console.dart';
@@ -42,8 +44,16 @@ class _ConsoleViewPageState extends State<ConsoleViewPage> {
                     currentConsole = listofConsole[index];
                     return Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Theme.of(context)
+                                    .appBarTheme
+                                    .backgroundColor!,
+                                blurRadius: 6,
+                                offset: const Offset(2, 6))
+                          ]),
                       margin: const EdgeInsets.all(15.0),
                       child: Wrap(
                         alignment: WrapAlignment.center,
@@ -69,9 +79,10 @@ class _ConsoleViewPageState extends State<ConsoleViewPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               buildWrap(currentConsole.productStock.toString(),
-                                  iconData: Icons.bolt, labelText: 'Stock'),
+                                  path: 'assets/Icons/IconBox.png',
+                                  labelText: 'Stock'),
                               buildWrap(currentConsole.productPrice.toString(),
-                                  iconData: Icons.monetization_on,
+                                  path: 'assets/Icons/IconCoin.png',
                                   labelText: 'Price'),
                             ],
                           ),

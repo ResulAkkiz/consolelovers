@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_firs
 import 'package:consolelovers/Model/Product.dart';
+import 'package:consolelovers/Model/ProductInBasket.dart';
 
 class Order {
   String orderID;
@@ -56,7 +58,7 @@ class Order {
     };
   }
 
-  /*factory Order.fromMap(Map<String, dynamic> map) {
+  factory Order.fromMap(Map<String, dynamic> map) {
     return Order(
       orderID: map['orderID'] as String,
       gamerID: map['gamerID'] as String,
@@ -64,9 +66,17 @@ class Order {
       gamerSurname: map['gamerSurname'] as String,
       gamerPhoneNumber: map['gamerPhoneNumber'] as String,
       gamerAdress: map['gamerAdress'] as String,
-      productList: List<Product>.from((map['productList'] as List<int>).map<Product>((x) => Product.fromMap(x as Map<String,dynamic>),),),
+      productList: List<ProductInBasket>.from(
+        (map['productList'] as List<dynamic>).map<ProductInBasket>(
+          (x) => ProductInBasket.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
       orderPrice: map['orderPrice'] as int,
     );
-  }*/
+  }
 
+  @override
+  String toString() {
+    return 'Order(orderID: $orderID, gamerID: $gamerID, gamerName: $gamerName, gamerSurname: $gamerSurname, gamerPhoneNumber: $gamerPhoneNumber, gamerAdress: $gamerAdress, productList: $productList, orderPrice: $orderPrice)';
+  }
 }

@@ -136,8 +136,35 @@ class FirebaseDbService extends DbBase {
   Future<bool> saveOrder(Order order) async {
     await _firebaseFirestore
         .collection('order')
-        .doc(order.orderID)
-        .set(order.toMap());
+        .doc(order.gamerID)
+        .set({order.orderID: order.toMap()}, SetOptions(merge: true));
     return true;
+  }
+
+  @override
+  Future<Console> getConsolebyID(String consoleID) async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _firebaseFirestore.collection('console').doc(consoleID).get();
+    return Console.fromMap(snapshot.data()!);
+  }
+
+  Future<void> deleteProduct(String userID, String productID) async {
+    var docRef = _firebaseFirestore.collection('basket').doc(userID);
+    final updates = <String, dynamic>{
+      productID: FieldValue.delete(),
+    };
+    docRef.update(updates);
+  }
+
+  Future<List<Order>> getUserOrders(String userID) async {
+    Map<String, dynamic>? map =
+        (await _firebaseFirestore.collection('order').doc(userID).get()).data();
+    List<Order> listofOrder = [];
+    if (map != null) {
+      map.forEach((key, value) {
+        listofOrder.add(Order.fromMap(value));
+      });
+    }
+    return listofOrder;
   }
 }
